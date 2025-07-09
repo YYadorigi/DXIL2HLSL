@@ -1,0 +1,6 @@
+[submodule "vendor/dxil-spirv"]
+	path = vendor/dxil-spirv
+	url = git@github.com:HansKristian-Work/dxil-spirv.git
+[submodule "vendor/SPIRV-Cross"]
+	path = vendor/SPIRV-Cross
+	url = git@github.com:KhronosGroup/SPIRV-Cross.git
