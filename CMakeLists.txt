@@ -89,12 +89,15 @@ add_custom_command(TARGET HLSLDecompiler POST_BUILD
 # Step 6: Generate batch script for RenderDoc plugin
 set(BATCH_SCRIPT_CONTENT
 "@echo off
+setlocal enabledelayedexpansion
 
 : Decompile DXBC/DXIL/SPIR-V to HLSL
-\"%~dp0HLSLDecompiler.exe\" \"%1\"
+\"%~dp0HLSLDecompiler.exe\" %* 
 
 : Redirect to stdout
-for %%f in (\"%1\") do type \"%%~dpnf.hlsl\""
+for %%f in (\"%1\") do type \"%%~dpnf.hlsl\"
+
+endlocal"
 )
 
 file(WRITE ${CMAKE_BINARY_DIR}/HLSLDecompiler.bat "${BATCH_SCRIPT_CONTENT}")
