@@ -40,7 +40,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	fs::path inputFile = fs::absolute(argv[2]);
+	fs::current_path(exePath);
+
+	fs::path inputFile = fs::absolute(argv[1]);
 	fs::path outputFile;
 
 	if (argc > 3) {
@@ -65,8 +67,7 @@ int main(int argc, char* argv[])
 			tempSpv.replace_extension(".spv");
 
 			// Step 1: DXBC -> DXIL
-			std::string cmd1 = "cmd /c \"\"" + dxbc2dxil.string() +
-				"\" \"" + inputFile.string() +
+			std::string cmd1 = "cmd /c \"\"dxbc2dxil.exe\" \"" + inputFile.string() +
 				"\" -o \"" + tempDxil.string() +
 				"\" -emit-bc\"";
 			result = std::system(cmd1.c_str());
@@ -76,8 +77,7 @@ int main(int argc, char* argv[])
 			}
 
 			// Step 2: DXIL -> SPIR-V
-			std::string cmd2 = "cmd /c \"\"" + dxilSpirv.string() +
-				"\" \"" + tempDxil.string() +
+			std::string cmd2 = "cmd /c \"\"dxil-spirv.exe\" \"" + tempDxil.string() +
 				"\" --output \"" + tempSpv.string() + "\"\"";
 			result = std::system(cmd2.c_str());
 			if (result != 0) {
@@ -87,8 +87,7 @@ int main(int argc, char* argv[])
 			}
 
 			// Step 3: SPIR-V -> HLSL
-			std::string cmd3 = "cmd /c \"\"" + spirvCross.string() +
-				"\" \"" + tempSpv.string() +
+			std::string cmd3 = "cmd /c \"\"spirv-cross.exe\" \"" + tempSpv.string() +
 				"\" --output \"" + outputFile.string() +
 				"\" --hlsl --shader-model 60\"";
 			result = std::system(cmd3.c_str());
@@ -105,8 +104,7 @@ int main(int argc, char* argv[])
 			tempSpv.replace_extension(".spv");
 
 			// Step 1: DXIL -> SPIR-V
-			std::string cmd1 = "cmd /c \"\"" + dxilSpirv.string() +
-				"\" \"" + inputFile.string() +
+			std::string cmd1 = "cmd /c \"\"dxil-spirv.exe\" \"" + inputFile.string() +
 				"\" --output \"" + tempSpv.string() + "\"\"";
 			result = std::system(cmd1.c_str());
 			if (result != 0) {
@@ -115,8 +113,7 @@ int main(int argc, char* argv[])
 			}
 
 			// Step 2: SPIR-V -> HLSL
-			std::string cmd2 = "cmd /c \"\"" + spirvCross.string() +
-				"\" \"" + tempSpv.string() +
+			std::string cmd2 = "cmd /c \"\"spirv-cross.exe\" \"" + tempSpv.string() +
 				"\" --output \"" + outputFile.string() +
 				"\" --hlsl --shader-model 60\"";
 			result = std::system(cmd2.c_str());
@@ -128,8 +125,7 @@ int main(int argc, char* argv[])
 		}
 		else if (mode == "-spirv") {
 			// SPIR-V -> HLSL
-			std::string cmd = "cmd /c \"\"" + spirvCross.string() +
-				"\" \"" + inputFile.string() +
+			std::string cmd = "cmd /c \"\"spirv-cross.exe\" \"" + inputFile.string() +
 				"\" --output \"" + outputFile.string() +
 				"\" --hlsl --shader-model 60\"";
 			result = std::system(cmd.c_str());
@@ -140,7 +136,6 @@ int main(int argc, char* argv[])
 		}
 
 		if (result == 0) {
-			// std::cout << "Successfully generated HLSL file: " << outputFile.string() << std::endl;
 			return 0;
 		}
 		return 1;
