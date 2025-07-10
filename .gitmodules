@@ -4,3 +4,6 @@
 [submodule "vendor/SPIRV-Cross"]
 	path = vendor/SPIRV-Cross
 	url = git@github.com:KhronosGroup/SPIRV-Cross.git
+[submodule "vendor/DirectXShaderCompiler"]
+	path = vendor/DirectXShaderCompiler
+	url = git@github.com:microsoft/DirectXShaderCompiler.git
