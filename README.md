@@ -11,8 +11,8 @@ Requires CMake 3.10+ and C++17 support
 ### Build
 
    ```bash
-   cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
-   cmake --build build --config Release
+   cmake -B build -S .
+   cmake --build build
    ```
 
 ## RenderDoc Plugin Integration

@@ -53,9 +53,10 @@ ExternalProject_Add(dxcompiler_external
     CONFIGURE_COMMAND ${CMAKE_COMMAND} 
         -B ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler 
         -S ${CMAKE_SOURCE_DIR}/vendor/DirectXShaderCompiler 
-        -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=None
+        -DCMAKE_BUILD_TYPE=Release
+        -DLLVM_TARGETS_TO_BUILD=None
         -C ${CMAKE_SOURCE_DIR}/vendor/DirectXShaderCompiler/cmake/caches/PredefinedParams.cmake
-    BUILD_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler --target dxbc2dxil --config Release
+    BUILD_COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler --target dxbc2dxil dxcompiler dxilconv --config Release
     INSTALL_COMMAND ""
 )
 
@@ -67,6 +68,8 @@ set(DXIL_SPIRV_EXE_PATH ${CMAKE_BINARY_DIR}/vendor/dxil-spirv/Release/dxil-spirv
 set(DXIL_SPIRV_C_SHARED_DLL_PATH ${CMAKE_BINARY_DIR}/vendor/dxil-spirv/Release/dxil-spirv-c-shared.dll)
 set(SPIRV_CROSS_EXE_PATH ${CMAKE_BINARY_DIR}/vendor/SPIRV-Cross/Release/spirv-cross.exe)
 set(DXBC2DXIL_EXE_PATH ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler/Release/bin/dxbc2dxil.exe)
+set(DXCOMPILER_DLL_PATH ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler/Release/bin/dxcompiler.dll)
+set(DXILCONV_DLL_PATH ${CMAKE_BINARY_DIR}/vendor/DirectXShaderCompiler/Release/bin/dxilconv.dll)
 
 # Step 5: Copy executable files to main output directory
 add_custom_command(TARGET HLSLDecompiler POST_BUILD
@@ -82,6 +85,12 @@ add_custom_command(TARGET HLSLDecompiler POST_BUILD
         $<TARGET_FILE_DIR:HLSLDecompiler>
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${DXBC2DXIL_EXE_PATH}
+        $<TARGET_FILE_DIR:HLSLDecompiler>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${DXCOMPILER_DLL_PATH}
+        $<TARGET_FILE_DIR:HLSLDecompiler>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${DXILCONV_DLL_PATH}
         $<TARGET_FILE_DIR:HLSLDecompiler>
     DEPENDS dxil_spirv_external spirv_cross_external dxcompiler_external
 )

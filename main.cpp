@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 			std::string cmd1 = "cmd /c \"\"" + dxbc2dxil.string() +
 				"\" \"" + inputFile.string() +
 				"\" -o \"" + tempDxil.string() +
-				"\" -emit-llvm\"";
+				"\" -emit-bc\"";
 			result = std::system(cmd1.c_str());
 			if (result != 0) {
 				std::cerr << "dxbc2dxil failed with exit code: " << result << std::endl;
