@@ -78,7 +78,8 @@ int main(int argc, char* argv[])
 
 			// Step 2: DXIL -> SPIR-V
 			std::string cmd2 = "cmd /c \"\"dxil-spirv.exe\" \"" + tempDxil.string() +
-				"\" --output \"" + tempSpv.string() + "\"\"";
+				"\" --output \"" + tempSpv.string() + 
+				"\" --raw-llvm\"";
 			result = std::system(cmd2.c_str());
 			if (result != 0) {
 				std::cerr << "dxil-spirv failed with exit code: " << result << std::endl;
@@ -105,7 +106,8 @@ int main(int argc, char* argv[])
 
 			// Step 1: DXIL -> SPIR-V
 			std::string cmd1 = "cmd /c \"\"dxil-spirv.exe\" \"" + inputFile.string() +
-				"\" --output \"" + tempSpv.string() + "\"\"";
+				"\" --output \"" + tempSpv.string() + 
+				"\" --raw-llvm\"";
 			result = std::system(cmd1.c_str());
 			if (result != 0) {
 				std::cerr << "dxil-spirv failed with exit code: " << result << std::endl;

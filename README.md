@@ -12,7 +12,7 @@ Requires CMake 3.10+ and C++17 support
 
    ```bash
    cmake -B build -S .
-   cmake --build build
+   cmake --build build --config Release
    ```
 
 ## RenderDoc Plugin Integration
